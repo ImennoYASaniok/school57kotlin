@@ -18,8 +18,21 @@ import java.io.FileReader
 import java.io.IOException
 
 class ConfigService(private val path: String) {
+    fun readConfig1(): List<String> {
+        val file = File(path)
+        val reader = BufferedReader(FileReader(file))
+        try {
+            val lines = mutableListOf<String>()
+            return lines
+        } catch (e: IOException) {
+            println("Ошибка при чтении файла: ${e.message}")
+        } finally {
+            reader.close()
+        }
+        return listOf()
+    }
 
-    fun readConfig(): List<String> {
+    fun readConfig2(): List<String> {
         val file = File(path)
         val reader = BufferedReader(FileReader(file))
         val lines = mutableListOf<String>()
@@ -30,8 +43,8 @@ class ConfigService(private val path: String) {
                     lines.add(line)
                     line = reader.readLine()
                 }
-            } catch (ex: IOException){
-                println("Ошибка IO: ${ex.message}")
+            } catch (e: IOException) {
+                println("Ошибка при чтении файла: ${e.message}")
             }
         }
         return lines
