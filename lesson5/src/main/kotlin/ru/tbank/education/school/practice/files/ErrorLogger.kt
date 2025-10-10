@@ -24,51 +24,47 @@ interface ErrorLogger {
 
 class IOErrorLogger(
     private val path: String
-) : ErrorLogger {
+): ErrorLogger {
     override fun logError(message: String, throwable: Throwable?): Boolean {
         try {
-            val writer = FileWriter(/* fileName = */ path, /* append = */ true)
+            val writer = FileWriter(path)
             writer.use {
-                val message = "$message ${throwable?.message}\n"
-                writer.append(message)
+                val messsage = "${message} ${throwable?.message}\n"
+                writer.append(messsage)
             }
             return true
-        } catch (ex: IOException) {
-            return false
-        }
+        } catch(ex: IOException) { return false }
     }
-
 }
 
 class NIOErrorLogger(
     private val path: String
-) : ErrorLogger {
+): ErrorLogger {
     override fun logError(message: String, throwable: Throwable?): Boolean {
+        val messsage = "${message} ${throwable?.message}\n"
         try {
-            val message = "$message ${throwable?.message}\n"
-            Files.writeString(Paths.get(path), message, StandardOpenOption.APPEND)
+            Files.writeString(Paths.get(path), messsage, StandardOpenOption.APPEND)
             return true
-        } catch (ex: IOException) {
-            return false
-        }
+        } catch(ex: IOException) { return false }
+
     }
 }
 
-//fun main() {
-//    val path = "./lesson5/log.txt"
-//    val ioErrorLogger = IOErrorLogger(path)
-//    val nioErrorLogger = NIOErrorLogger(path)
-//    try {
-//        10 / 0
-//    } catch (ex: Exception) {
-//        ioErrorLogger.logError("Получили ошибку", ex)
-//        nioErrorLogger.logError("Получили ошибку", ex)
-//    }
-//
-//    try {
-//        "STRING".toInt()
-//    } catch (ex: Exception) {
-//        ioErrorLogger.logError("Получили ошибку", ex)
-//        nioErrorLogger.logError("Получили ошибку", ex)
-//    }
-//}
+fun main() {
+    val path = "./lesson5/src/main/kotlin/ru/tbank/education/school/trycatchpractise/file_to_ErrorLogger.txt"
+    val ioErrorLoger = IOErrorLogger(path)
+    val nioErrorLoger = NIOErrorLogger(path)
+    try {
+        10 / 0
+    } catch (ex: Exception) {
+        ioErrorLoger.logError("Получена IO ошибка:", ex)
+        nioErrorLoger.logError("Получена NIO ошибка:", ex)
+    }
+
+    try {
+        "STRING".toInt()
+    } catch (ex: Exception) {
+        ioErrorLoger.logError("Получена IO ошибка:", ex)
+        nioErrorLoger.logError("Получена NIO ошибка:", ex)
+    }
+}

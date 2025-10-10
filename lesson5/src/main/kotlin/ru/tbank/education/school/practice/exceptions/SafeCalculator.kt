@@ -18,21 +18,21 @@ interface SafeCalculator {
     fun divide(a: Int, b: Int): Int?
 }
 
-class SafeCalculatorImpl : SafeCalculator {
+class SafeCalculatorImpl: SafeCalculator {
     override fun divide(a: Int, b: Int): Int? {
-        try {
-            return a / b
-        } catch (e: ArithmeticException) {
+        try { return a / b }
+        catch (e: ArithmeticException) {
             println("Попытка деления на ноль")
             return null
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             println("Найдена ошибка: ${e.message}")
             throw e
         }
     }
 }
-//
-//fun main() {
-//    val calculator = SafeCalculatorImpl()
-//    println(calculator.divide(10, 0))
-//}
+
+fun main() {
+    val calculator: SafeCalculatorImpl = SafeCalculatorImpl()
+    calculator.divide(10, 0)
+}
