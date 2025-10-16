@@ -25,3 +25,24 @@ interface InMemoryCache<K, V> {
      */
     fun clear()
 }
+
+class InMemoryCacheImpl<K, V>: InMemoryCache<K, V> {
+    protected val hashData = HashMap<K, V>()
+
+    override fun put(key: K, value: V) {
+        hashData[key] = value
+    }
+
+    override fun get(key: K): V? {
+        if (key in hashData.keys) return hashData[key]
+        else return null
+    }
+
+    override fun remove(key: K) {
+        hashData.remove(key)
+    }
+
+    override fun clear() {
+        hashData.clear()
+    }
+}

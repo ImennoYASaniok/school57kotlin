@@ -18,8 +18,13 @@ fun task1Lists() {
     val shoppingList = listOf("Молоко", "Хлеб", "Яблоки", "Сыр")
 
     // TODO: проверить, есть ли "Хлеб" в списке
+    println(shoppingList.contains("Хлеб"))
+
     // TODO: отсортировать список по алфавиту и вывести
+    println(shoppingList.sorted())
+
     // TODO: вывести только товары, начинающиеся на букву "С"
+    println(shoppingList.filter { it[0] == 'С' })
 }
 
 // -----------------------
@@ -31,8 +36,13 @@ fun task2Sets() {
     val javaStudents = setOf("Иван", "Петр", "Ольга")
 
     // TODO: добавить дубликат в kotlinStudents и посмотреть, что произойдет
+    kotlinStudents.add("Анна"); println(kotlinStudents) // Ничего не изменится
+
     // TODO: проверить, есть ли "Мария" в списке студентов Kotlin
+    println(kotlinStudents.contains("Мария"))
+
     // TODO: найти пересечение студентов Kotlin и Java курсов
+    println(kotlinStudents.filter { it in javaStudents })
 }
 
 // -----------------------
@@ -45,6 +55,11 @@ fun task3Maps() {
         "Ноутбук" to 80000,
         "Наушники" to 3000
     )
+
+    products["Телефон"] = 52000; println(products)
+    products["Планшет"] = 40000; println(products)
+    products.filter { it.value > 1000 }
+    println(products["werwere"])
 
     // TODO: изменить цену для "Телефон"
     // TODO: добавить новый товар "Планшет" с ценой 40000
@@ -59,12 +74,18 @@ fun task4FilterAndGroup() {
     println("=== Task 4: Filter & Group ===")
     val numbers = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
+    print("Чётные:"); println(numbers.filter { it % 2 == 0 })
+    print("Нечётные:"); println(numbers.filter { it % 2 == 0 })
+    println(numbers.map { "Число ${it}" })
+
     // TODO: сгруппировать числа на четные и нечетные
     // TODO: преобразовать список чисел в список строк "Число: X"
 
     val words = listOf("кот", "пес", "кот", "лиса", "пес")
 
     // TODO: выделить только уникальные слова
+
+    println(words.toSet()) // words.filter { it1 -> (words.filter { it2 -> it2 == it1 }).size == 1 } // Повторяются О(n)
 }
 
 // -----------------------
@@ -81,8 +102,15 @@ fun task5Books() {
     )
 
     // TODO: найти все книги автора "Иванов"
+    println(books.filter { it.author == "Иванов" })
+
     // TODO: отсортировать книги по году
+    println(books.sortedBy { it.year })
+
     // TODO: сгруппировать книги по авторам
+    books.groupBy { it.author }
+    val a = books.map { it.author }.toSet()
+    println(a.map { it1 -> books.filter { it2 -> it1 == it2.author } })
 }
 
 // -----------------------
@@ -98,7 +126,11 @@ fun task6Store() {
     val cart = listOf("Молоко", "Хлеб", "Сыр")
 
     // TODO: посчитать общую стоимость покупок
+    println(store.values.sum())
+
     // TODO: вывести сообщение для товаров, которых нет в магазине
+    // for (it in cart.filter { !(it in store.keys) }) throw Exception("Ошибка: ${it} не в магазине") // Exception
+    for (it in cart.filter { !(it in store.keys) }) println("Ошибка: ${it} не в магазине")
 }
 
 // -----------------------
@@ -121,5 +153,9 @@ fun task7Students() {
     )
 
     // TODO: найти студентов, которые учатся и на Kotlin, и на Java
+    val javaStudentNames = javaCourse.map { it.name }
+    println(kotlinCourse.map { it.name }.filter { it in javaStudentNames } )
+
     // TODO: сгруппировать студентов Kotlin по группам
+    println(kotlinCourse.map { it1 -> kotlinCourse.filter { it2 -> it1.group == it2.group } }.toSet())
 }

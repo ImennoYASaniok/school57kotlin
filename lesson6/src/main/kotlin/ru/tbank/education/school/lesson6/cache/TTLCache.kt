@@ -29,3 +29,27 @@ interface TTLCache<K, V> {
      */
     fun get(key: K): V?
 }
+
+data class TTLCacheValue<V>(val value: V, val ttlTime: Long)
+
+class TTLCacheImpl<K, V>: TTLCache<K, V> {
+    protected val hashData = HashMap<K, TTLCacheValue<V>>()
+
+    override fun put(key: K, value: V, ttlMs: Long) {
+        hashData[key] = TTLCacheValue(value, ttlMs + System.currentTimeMillis())
+    }
+
+    override fun put(key: K, value: V) {
+        hashData[key] = TTLCacheValue(value, 60000 + System.currentTimeMillis())
+    }
+
+    override fun get(key: K): V? {
+        if (key in hashData) {
+            if(System.currentTimeMillis() < hashData[key]!!.ttlTime) {
+                return hashData[key]!!.value
+            } else { hashData.remove(key); return null }
+        } else return null
+    }
+}
+
+// System.currentTimeMillis()
