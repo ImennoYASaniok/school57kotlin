@@ -1,5 +1,8 @@
 package ru.tbank.education.school.lesson7.practise.task2
 
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
+
 /**
  * Реализуй декоратор limitRate(intervalMs: Long, f: (A) -> R): (A) -> R?
  *
@@ -20,7 +23,14 @@ package ru.tbank.education.school.lesson7.practise.task2
  * printMessage("C") // выполняется
  */
 fun <A, R> limitRate(intervalMs: Long, f: (A) -> R): (A) -> R? {
-    TODO()
+    var lastCall: LocalDateTime? = null
+    return { avg: A ->
+        val now = LocalDateTime.now()
+        if (lastCall == null || ChronoUnit.MILLIS.between(lastCall, now) >= intervalMs) {
+            lastCall = now
+            f(avg)
+        } else { null }
+    }
 }
 
 
@@ -40,7 +50,11 @@ fun <A, R> limitRate(intervalMs: Long, f: (A) -> R): (A) -> R? {
  * println(safeDivide(0))  // Failure(java.lang.ArithmeticException: / by zero)
  */
 fun <A, R> safeCall(f: (A) -> R): (A) -> Result<R> {
-    TODO()
+    return { avg: A ->
+        try {
+            Result.success(f(avg))
+        } catch (e: Exception) { Result.failure(e) }
+    }
 }
 
 /**
@@ -62,7 +76,12 @@ fun <A, R> safeCall(f: (A) -> R): (A) -> Result<R> {
  * 15
  */
 fun <A, R> logCalls(name: String, f: (A) -> R): (A) -> R {
-    TODO()
+    return { a: A ->
+        println("[${name}] вызвана с аргументом: a")
+        val result = f(a)
+        println("[${name}] вернула результат: r")
+        result
+    }
 }
 
 

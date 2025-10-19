@@ -22,5 +22,15 @@ fun sliceEvents(
     events: List<Event>,
     nToday: Int
 ): Triple<Event?, List<Event>, List<Event>> {
-    TODO()
+    val firstErrorEvent = events.firstOrNull {
+        it.type == EventType.ERROR
+    }
+    val lastEvents = events.filter {
+        it.type == EventType.LOGIN
+    }.takeLast(2)
+    val firstEvents = events.filter {
+        it.date.toLocalDate() == LocalDate.now()
+    }.take(nToday)
+
+    return Triple(firstErrorEvent, lastEvents, firstEvents)
 }

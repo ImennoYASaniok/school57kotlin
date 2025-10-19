@@ -20,8 +20,9 @@ package ru.tbank.education.school.lesson7.practise.task4
  * println(r2.isFailure) // true
  * ```
  */
-fun parseIntSafe(value: String): Result<Int> = TODO()
-
+fun parseIntSafe(value: String): Result<Int> = runCatching {
+    value.toInt()
+} // .onSuccess { println("Результат: $it") }.onFailure { println("Ошибка: ${it.message}") }
 
 /**
  * Задание 2. Значение по умолчанию
@@ -39,7 +40,9 @@ fun parseIntSafe(value: String): Result<Int> = TODO()
  * println(parseWithDefault("abc", 0)) // 0
  * ```
  */
-fun parseWithDefault(input: String, default: Int): Int = TODO()
+fun parseWithDefault(input: String, default: Int): Int = runCatching {
+    input.toInt()
+}.getOrElse { default }
 
 
 /**
@@ -57,4 +60,6 @@ fun parseWithDefault(input: String, default: Int): Int = TODO()
  * // Выводит: Ошибка деления: / by zero
  * ```
  */
-fun safeDivideLogged(a: Int, b: Int): Result<Double> = TODO()
+fun safeDivideLogged(a: Int, b: Int): Result<Double> = runCatching {
+    a.toDouble() / b
+}.onFailure { e -> println("Ошибка деления: ${e.message}") }
