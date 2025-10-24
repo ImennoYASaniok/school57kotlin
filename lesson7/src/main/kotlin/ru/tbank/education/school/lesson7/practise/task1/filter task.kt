@@ -23,3 +23,4 @@ fun suspiciousTransactions(
         tx.amount > threshold || tx.category in listOf(TxCategory.CRYPTO, TxCategory.GAMBLING) || (tx.country != "RU" && tx.amount > foreignThreshold)
     }
 }
+
