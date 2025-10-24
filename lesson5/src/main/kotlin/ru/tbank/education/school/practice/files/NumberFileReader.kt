@@ -26,12 +26,11 @@ class NumberFileReader(private val path: String) {
             return null
         }
     }
-
 }
 
-//fun main() {
-//    val path = "./lesson5/numbers.txt"
-//
-//    val reader = NumberFileReader(path)
-//    println(reader.readNumber())
-//}
+fun main() {
+    val path = "./lesson5/src/main/kotlin/ru/tbank/education/school/files/number.txt"
+
+    val reader = NumberFileReader(path)
+    reader.readNumber()
+}
