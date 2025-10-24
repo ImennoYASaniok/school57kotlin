@@ -1,5 +1,7 @@
 package ru.tbank.education.school.lesson7.practise.task2
 
+import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -77,9 +79,9 @@ fun <A, R> safeCall(f: (A) -> R): (A) -> Result<R> {
  */
 fun <A, R> logCalls(name: String, f: (A) -> R): (A) -> R {
     return { a: A ->
-        println("[${name}] вызвана с аргументом: a")
+        println("[${name}] вызвана с аргументом: ${a}")
         val result = f(a)
-        println("[${name}] вернула результат: r")
+        println("[${name}] вернула результат: ${result}")
         result
     }
 }
@@ -99,9 +101,33 @@ fun <A, R> logCalls(name: String, f: (A) -> R): (A) -> R {
  * val safe = retry(5, unstable)
  * println(safe()) // ok
  */
-fun <T> retry(times: Int, f: () -> T): () -> T {
-    TODO()
+fun <T> retry(times: Int, f: () -> T): () -> T? {
+    return {
+        var cnt = times
+        var exc: Exception? = null
+        var res: T? = null
+        var check = false
+
+        while (cnt > 0) {
+            cnt--
+            try {
+                res = f()
+                check = true
+            } catch (e: Exception) {
+                exc = e
+            }
+        }
+        if (!check) throw exc ?: Exception("Непредвиденная ошибка")
+        res
+    }
 }
+
+/*fun main() {
+    var attempts = 0
+    val unstable = { if (++attempts < 3) error("fail") else "ok" }
+    val safe = retry(5, unstable)
+    println(safe()) // ok
+}*/
 
 /**
  * Таймер-декоратор.
@@ -120,7 +146,13 @@ fun <T> retry(times: Int, f: () -> T): () -> T {
  * println(slowFn(10))
  */
 fun <A, R> timed(name: String, f: (A) -> R): (A) -> R {
-    TODO()
+    return { a: A ->
+        val old = LocalDateTime.now()
+        val res = f(a)
+        val new = LocalDateTime.now()
+        println("[${name}] выполнено за ${Duration.between(old, new).toMillis()} мс")
+        res
+    }
 }
 
 /**
@@ -143,5 +175,17 @@ fun <A, R> timed(name: String, f: (A) -> R): (A) -> R {
  *
  */
 fun <A, R> memoizeWith(capacity: Int, f: (A) -> R): (A) -> R {
-    TODO()
+    val cache = object : LinkedHashMap<A, R>(capacity, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<A, R>?): Boolean {
+            return size > capacity
+        }
+    }
+    return { a: A ->
+        if (a in cache) cache[a]!!
+        else {
+            val res = f(a)
+            cache[a] = res
+            res
+        }
+    }
 }
