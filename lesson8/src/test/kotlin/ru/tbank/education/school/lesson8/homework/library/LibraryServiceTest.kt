@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
 
+const val DAYS_OVERDUE = 10
+
 class LibraryServiceTest {
 
     private lateinit var library: LibraryService
@@ -20,7 +22,7 @@ class LibraryServiceTest {
         val book = Book("1984", "George Orwell", "978-0-452-28423-4")
 
         library.addBook(book)
-        library.borrowBook("978-0-452-28423-4", "Ivan")
+        library.borrowBook("978-0-452-28423-4", "Ivan", DAYS_OVERDUE)
 
         assertFalse(library.isAvailable("978-0-452-28423-4"))
     }
@@ -31,10 +33,10 @@ class LibraryServiceTest {
         val book = Book("1984", "George Orwell", "978-0-452-28423-4")
 
         library.addBook(book)
-        library.borrowBook("978-0-452-28423-4", "Ivan")
+        library.borrowBook("978-0-452-28423-4", "Ivan", DAYS_OVERDUE)
 
         assertThrows(IllegalArgumentException::class.java) {
-            library.borrowBook("978-0-452-28423-4", "Petr")
+            library.borrowBook("978-0-452-28423-4", "Petr", DAYS_OVERDUE)
         }
     }
 
@@ -44,7 +46,7 @@ class LibraryServiceTest {
         val book = Book("1984", "George Orwell", "978-0-452-28423-4")
 
         library.addBook(book)
-        library.borrowBook("978-0-452-28423-4", "Ivan")
+        library.borrowBook("978-0-452-28423-4", "Ivan", DAYS_OVERDUE)
         library.returnBook("978-0-452-28423-4")
 
         assertTrue(library.isAvailable("978-0-452-28423-4"))
@@ -62,7 +64,7 @@ class LibraryServiceTest {
     @DisplayName("Нельзя взять книгу, которой нет в каталоге")
     fun cannotBorrowNonExistentBook() {
         assertThrows(IllegalArgumentException::class.java) {
-            library.borrowBook("978-0-452-28423-4", "Ivan")
+            library.borrowBook("978-0-452-28423-4", "Ivan", DAYS_OVERDUE)
         }
     }
 
@@ -72,7 +74,7 @@ class LibraryServiceTest {
         val book = Book("Dune", "Frank Herbert", "978-0-441-17271-9")
 
         library.addBook(book)
-        library.borrowBook("978-0-441-17271-9", "Alice")
+        library.borrowBook("978-0-441-17271-9", "Alice", DAYS_OVERDUE)
 
         val fine = library.calculateOverdueFine("978-0-441-17271-9", daysOverdue = 7)
         assertEquals(0, fine)
@@ -84,7 +86,7 @@ class LibraryServiceTest {
         val book = Book("Dune", "Frank Herbert", "978-0-441-17271-9")
 
         library.addBook(book)
-        library.borrowBook("978-0-441-17271-9", "Alice")
+        library.borrowBook("978-0-441-17271-9", "Alice", DAYS_OVERDUE)
 
         val fine = library.calculateOverdueFine("978-0-441-17271-9", daysOverdue = 15)
         assertEquals(300, fine)
@@ -98,10 +100,10 @@ class LibraryServiceTest {
 
         library.addBook(book1)
         library.addBook(book2)
-        library.borrowBook("978-0-452-28423-4", "Ivan")
+        library.borrowBook("978-0-452-28423-4", "Ivan", DAYS_OVERDUE)
 
         assertThrows(IllegalArgumentException::class.java) {
-            library.borrowBook("978-0-441-17271-9", "Ivan")
+            library.borrowBook("978-0-441-17271-9", "Ivan", DAYS_OVERDUE + 1)
         }
     }
 }
