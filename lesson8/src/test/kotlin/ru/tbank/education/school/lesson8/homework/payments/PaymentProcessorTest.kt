@@ -105,7 +105,7 @@ class PaymentProcessorTest {
     @Test
     fun `Нехватка средств`() {
         val processor = PaymentProcessor()
-        val insufficientFundsCard = "5500123456789012"
+        val insufficientFundsCard = "5500000000000004"
 
         val result = processor.processPayment(100, insufficientFundsCard, 12, 2026, "USD", "cust")
 
