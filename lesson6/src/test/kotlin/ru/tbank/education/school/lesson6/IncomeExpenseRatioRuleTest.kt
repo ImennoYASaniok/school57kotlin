@@ -10,7 +10,8 @@ import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Currency
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.PaymentRisk
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Region
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.InMemoryTransactionRepository
-import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.IncomeExpenseRatioRule
+// import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.IncomeExpenseRatioRule
+import ru.tbank.education.school.lesson6.creditriskanalyzer.rules_extra.IncomeExpenseRatioRule
 import java.util.*
 
 class IncomeExpenseRatioRuleTest {
