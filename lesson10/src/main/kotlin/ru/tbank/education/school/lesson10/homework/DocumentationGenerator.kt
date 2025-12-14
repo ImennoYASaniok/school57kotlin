@@ -84,13 +84,10 @@ object DocumentationGenerator {
                     }
                 }
 
-                if (docMethod != null) {
-                    if (docMethod.returns != "No description") {
-                        builder.append("  Возвращает: ${docMethod.returns}\n")
-                    }
-                } else {
-                    builder.append("  Возвращает: Нет описания\n")
-                }
+                val returnsText = docMethod?.let {
+                    if (it.returns != "No description") it.returns else "Нет описания"
+                } ?: "Нет описания"
+                builder.append("  Возвращает: $returnsText\n")
             }
         }
 
