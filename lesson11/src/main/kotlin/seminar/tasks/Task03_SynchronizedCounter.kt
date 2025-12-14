@@ -12,6 +12,23 @@ object SynchronizedCounter {
      * @return финальное значение counter (должно быть ровно 10000)
      */
     fun run(): Int {
-        TODO("Реализуйте потокобезопасный счетчик")
+        var counter = 0
+        val threads = mutableListOf<Thread>()
+        val lock = Any()
+
+        repeat(10) {
+            val thread = Thread {
+                repeat(1000) {
+                    synchronized(lock) {
+                        counter++
+                    }
+                }
+            }
+            threads.add(thread)
+        }
+        threads.forEach { it.start() }
+        threads.forEach { it.join() }
+
+        return counter
     }
 }

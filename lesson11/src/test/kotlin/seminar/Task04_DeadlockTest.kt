@@ -10,10 +10,10 @@ import kotlin.test.assertTrue
 class DeadlockTest {
 
 //     Тест для deadlock закомментирован - он зависнет!
-//     @Test
-//     fun `should demonstrate deadlock`() {
-//         Deadlock.runDeadlock()
-//     }
+     @Test
+     fun `should demonstrate deadlock`() {
+         Deadlock.runDeadlock()
+     }
 
     @Test
     fun `fixed version should complete without deadlock`() {
