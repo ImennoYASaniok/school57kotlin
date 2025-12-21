@@ -12,13 +12,17 @@ import java.util.concurrent.atomic.AtomicInteger
  * Проблема: Несколько корутин одновременно увеличивают счетчик `value`,
  * что приводит к потере некоторых инкрементов из-за race condition.
  */
+
 class UnsafeCounter {
 
     private var value = 0
+    private val mutex = Mutex()
 
     suspend fun increment() {
         delay(1)
-        value++
+        mutex.withLock {
+            value++
+        }
     }
 
     fun getValue(): Int = value
