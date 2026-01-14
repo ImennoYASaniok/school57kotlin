@@ -10,7 +10,8 @@ import ru.tbank.education.school.lesson6.creditriskanalyzer.models.PaymentRisk
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Region
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.InMemoryLoanRepository
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.InMemoryOverdueRepository
-import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.LoanCountRule
+// import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.LoanCountRule
+import ru.tbank.education.school.lesson6.creditriskanalyzer.rules_extra.LoanCountRule
 import java.time.LocalDateTime
 import java.util.*
 

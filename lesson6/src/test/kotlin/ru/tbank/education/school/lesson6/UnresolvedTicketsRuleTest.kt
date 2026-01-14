@@ -8,7 +8,8 @@ import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Region
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Ticket
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.TicketTopic
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.InMemoryTicketRepository
-import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.UnresolvedTicketsRule
+// import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.UnresolvedTicketsRule
+import ru.tbank.education.school.lesson6.creditriskanalyzer.rules_extra.UnresolvedTicketsRule
 import java.util.*
 
 class UnresolvedTicketsRuleTest {

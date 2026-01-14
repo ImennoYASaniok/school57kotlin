@@ -3,7 +3,8 @@ package ru.tbank.education.school.lesson6.creditriskanalyzer
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Client
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Decision
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.ScoringResult
-import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.ScoringRule
+// import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.ScoringRule
+import ru.tbank.education.school.lesson6.creditriskanalyzer.rules_extra.ScoringRule
 
 class ScoringEngine(
     private val rules: List<ScoringRule>

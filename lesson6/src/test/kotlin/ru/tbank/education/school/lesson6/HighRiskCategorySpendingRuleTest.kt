@@ -9,7 +9,8 @@ import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Currency
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Transaction
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.TransactionCategory
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.InMemoryTransactionRepository
-import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.HighRiskCategorySpendingRule
+// import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.HighRiskCategorySpendingRule
+import ru.tbank.education.school.lesson6.creditriskanalyzer.rules_extra.HighRiskCategorySpendingRule
 import java.time.LocalDateTime
 import java.util.*
 

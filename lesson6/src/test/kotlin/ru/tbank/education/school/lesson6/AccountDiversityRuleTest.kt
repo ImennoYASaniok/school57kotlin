@@ -9,7 +9,8 @@ import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Client
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.PaymentRisk
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Region
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.InMemoryAccountRepository
-import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.AccountDiversityRule
+//import ru.tbank.education.school.lesson6.creditriskanalyzer.rules.AccountDiversityRule
+import ru.tbank.education.school.lesson6.creditriskanalyzer.rules_extra.AccountDiversityRule
 import java.util.*
 
 class AccountDiversityRuleTest {

@@ -1,0 +1,36 @@
+package ru.tbank.education.school.lesson6.creditriskanalyzer.rules_extra
+
+import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Client
+import ru.tbank.education.school.lesson6.creditriskanalyzer.models.ScoringResult
+import ru.tbank.education.school.lesson6.creditriskanalyzer.models.PaymentRisk
+import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.TransactionRepository
+import java.time.LocalDateTime
+
+/**
+ * Необходимо определить активность клиента.
+ * Для этого нужно посчитать количество транзакций выполненных клиентом за последний месяц
+ *
+ * Как считать score:
+ * - Если таких транзакций меньше 500 → HIGH
+ * - Если таких транзакций больше или равно 500, но меньше 1000 → MEDIUM
+ * - Если таких транзакций больше 1000 → LOW
+ */
+class TransactionCountRule(
+    private val transactionRepo: TransactionRepository,
+) : ScoringRule {
+
+    override val ruleName: String = "Transaction Count"
+
+    override fun evaluate(client: Client): ScoringResult {
+        val oneMonthAgo = LocalDateTime.now().minusMonths(1)
+        val count = transactionRepo.getTransactions(client.id).count { it.date.isAfter(oneMonthAgo) }
+
+        val risk = when {
+            count < 500 -> PaymentRisk.HIGH
+            count <= 1000 -> PaymentRisk.MEDIUM
+            else -> PaymentRisk.LOW
+        }
+
+        return ScoringResult(ruleName, risk)
+    }
+}
