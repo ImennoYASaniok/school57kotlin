@@ -22,14 +22,15 @@ class SafeNumberParserImpl: SafeNumberParser {
         try {
             return input.toInt()
         } catch (e: NumberFormatException) {
-            println("Error: string to number cast failed")
+            println("Ошибка: невозможно перевести в числовой тип")
             return null
+        } catch (e: Exception) {
+            throw e
         }
     }
 }
 
-//fun main() {
-//    val parser: SafeNumberParserImpl = SafeNumberParserImpl()
-//
-//    println(parser.parseInt("effe"))
-//}
+fun main() {
+    val parser: SafeNumberParserImpl = SafeNumberParserImpl()
+    println(parser.parseInt("eefewff"))
+}

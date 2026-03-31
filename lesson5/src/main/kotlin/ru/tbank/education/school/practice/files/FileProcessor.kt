@@ -6,7 +6,6 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.Paths
-
 /**
  * Интерфейс для безопасной работы с текстовыми файлами.
  */
@@ -24,47 +23,41 @@ interface FileProcessor {
     fun readFile(path: String): List<String>?
 }
 
-class IOFileProcessor : FileProcessor {
+class IOFileProcessor: FileProcessor {
     override fun readFile(path: String): List<String>? {
-        val lines = mutableListOf<String>()
-        var line: String?
+        val lines: MutableList<String> = mutableListOf()
+        var line: String? = null
+
         try {
             val file = File(path)
-            file.bufferedReader().use { reader ->
-                while (reader.readLine().also { line = it } != null) {
-                    lines.add(line!!)
-                }
-            }
-        } catch (ex: FileNotFoundException) {
-            return lines
-        } catch (ex: IOException) {
-            return null
-        }
-        return lines
+            file.bufferedReader().use { reader -> while(reader.readLine().also { line = it } != null) lines.add(line!!) }
+            return lines.toList()
+        } catch (ex: FileNotFoundException) { return emptyList() }
+        catch (ex: IOException) { throw ex }
+
     }
 }
 
-class NIOFileProcessor : FileProcessor {
+class NIOFileProcessor: FileProcessor {
     override fun readFile(path: String): List<String>? {
         val path = Paths.get(path)
-        try {
-            return Files.readAllLines(path)
-        } catch (ex: NoSuchFileException) {
-            return emptyList()
-        } catch (ex: IOException) {
-            return null
-        }
+        try { return Files.readAllLines(path) }
+        catch (ex: NoSuchFileException) { return emptyList() }
+        catch (ex: IOException) { throw ex }
     }
 }
 
-//fun main() {
-//    val path = "./lesson5/example.txt"
-//    val ioProcessor = IOFileProcessor()
-//    val nioProcessor = NIOFileProcessor()
-//
-//    val linesWithIo = ioProcessor.readFile(path)
-//    val linesWithNio = nioProcessor.readFile(path)
-//
-//    println("Строки, прочитанные с помощью IO: $linesWithIo")
-//    println("Строки, прочитанные с помощью NIO: $linesWithNio")
-//}
+fun main() {
+
+    val ioFileProccessor = IOFileProcessor()
+    val nioFileProcessor = NIOFileProcessor()
+
+    val path = "./lesson5/src/main/kotlin/ru/tbank/education/school/trycatchpractise/file_toFileProcessor.txt"
+    val ioLines = ioFileProccessor.readFile(path)
+    println("Содержимое ioLines:")
+    for (ind in 1..ioLines!!.size - 1) println(ioLines[ind])
+    println()
+    val nioLines = nioFileProcessor.readFile(path)
+    println("Содержимое nioLines:")
+    for (ind in 1..nioLines!!.size - 1) println(nioLines[ind])
+}

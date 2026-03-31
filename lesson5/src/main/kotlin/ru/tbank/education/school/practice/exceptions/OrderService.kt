@@ -24,35 +24,32 @@ interface OrderService {
 
 }
 
-data class OrderItem(
+data class OrderItemImpl (
     val productId: String,
     val quantity: Int
 )
 
-class OrderServiceImpl : OrderService {
-    val cart = mutableListOf<OrderItem>()
+class OrderServiceImpl: OrderService {
+    val cart: MutableList<OrderItemImpl> = mutableListOf()
 
     override fun addToCart(productId: String, quantity: Int) {
-        if (quantity <= 0) {
-            throw IllegalArgumentException(
-                "Попытка добавить продукт в количестве меньшем, чем единица"
-            )
-        }
-
-        val orderItem = OrderItem(productId, quantity)
-        cart.add(orderItem)
+        if (quantity <= 0) throw IllegalArgumentException("Ошибка: Попытка добавить продукт в не положительном количестве")
+        cart.add(OrderItemImpl(productId, quantity))
     }
 
     override fun removeFromCart(productId: String) {
-        if (!cart.removeIf { it.productId == productId }) {
-            throw NoSuchElementException("Не найдены элементы для удаления из заказа")
-        }
+        if (!cart.removeIf { it.productId == productId }) throw NoSuchElementException("Ошибка: продукт не найден")
     }
+
 }
 
-//fun main() {
-//    val orderServiceImpl = OrderServiceImpl()
-//    orderServiceImpl.addToCart("123", 1)
-//    orderServiceImpl.removeFromCart("123")
-//    orderServiceImpl.removeFromCart("123")
-//}
+fun main() {
+    val orderService: OrderServiceImpl = OrderServiceImpl()
+
+    for (ind in 1..10) orderService.addToCart(ind.toString(), 11 - ind)
+    // orderService.addToCart("11", 0)
+    println("Корзина:"); for (ordertem: OrderItemImpl in orderService.cart) println("productId = ${ordertem.productId}, quantality = ${ordertem.quantity}")
+    orderService.removeFromCart("10")
+    println("Корзина:"); for (ordertem: OrderItemImpl in orderService.cart) println("productId = ${ordertem.productId}, quantality = ${ordertem.quantity}")
+    orderService.removeFromCart("12")
+}

@@ -18,8 +18,18 @@ data class BookedSeat(
 class MovieBookingService(
     private val maxQuantityOfSeats: Int // Максимальное кол-во мест
 ) {
+    private var countSeats = 0
+    private val dataSeats = mutableMapOf<String, MutableList<Int>>()
+
     init {
-        TODO("Выбрасывать IllegalArgumentException, максимальное кол-во мест отрицательное или равно нулю")
+        if (maxQuantityOfSeats <= 0) throw IllegalArgumentException("Ошибка: максимальное число мест неположительное")
+    }
+
+    fun printSeats() {
+        for (iMovieId in dataSeats.keys) {
+            print(iMovieId); print(": "); for (iSeat in dataSeats[iMovieId]!!) { print(iSeat); print(" ") }; println()
+        }
+        println()
     }
 
     /**
@@ -32,7 +42,13 @@ class MovieBookingService(
      * @throws SeatAlreadyBookedException если место уже забронировано
      */
     fun bookSeat(movieId: String, seat: Int) {
-        TODO("Реализовать логику")
+        if (seat < 0 || seat >= maxQuantityOfSeats) throw IllegalArgumentException("Ошибка: номер места превышает максимальное количество мест")
+        if (countSeats >= maxQuantityOfSeats) throw NoAvailableSeatException("Ошибка: нет свободных мест")
+        if (isSeatBooked(movieId, seat)) throw SeatAlreadyBookedException("Ошибка: место уже забронировано")
+
+        if (movieId in dataSeats.keys) dataSeats[movieId]!!.add(seat)
+        else dataSeats[movieId] = mutableListOf(seat)
+        countSeats += 1
     }
 
     /**
@@ -43,7 +59,12 @@ class MovieBookingService(
      * @throws NoSuchElementException если место не было забронировано
      */
     fun cancelBooking(movieId: String, seat: Int) {
-        TODO("Реализовать логику")
+        if (!isSeatBooked(movieId, seat)) throw NoSuchElementException("Ошибка: место не было забронировано")
+
+        val currMoveIdSeats = dataSeats[movieId]!!
+        currMoveIdSeats.remove(seat)
+        dataSeats[movieId] = currMoveIdSeats
+        countSeats -= 1
     }
 
     /**
@@ -52,6 +73,34 @@ class MovieBookingService(
      * @return true если место занято, false иначе
      */
     fun isSeatBooked(movieId: String, seat: Int): Boolean {
-        TODO("Реализовать логику")
+        if (movieId in dataSeats.keys) {
+            val currMoveIdSeats = dataSeats[movieId]!!
+            var isBooked = false
+            for (iSeat in currMoveIdSeats) {
+                if (iSeat == seat) isBooked = true
+            }
+            return isBooked
+        } else return false
     }
+}
+
+fun main() {
+    // val movieBookingServiceException = MovieBookingService(0) // IllegalArgumentException
+    val movieBookingService = MovieBookingService(3)
+
+    movieBookingService.bookSeat("321", 0)
+    // movieBookingService.bookSeat("321", 0) // SeatAlreadyBookedException
+    movieBookingService.bookSeat("321", 1)
+    // movieBookingService.bookSeat("666", 3) // IllegalArgumentException
+    movieBookingService.bookSeat("777", 0)
+    //movieBookingService.bookSeat("555", 0) // NoAvailableSeatException
+    movieBookingService.printSeats()
+
+    // movieBookingService.cancelBooking("777", 1) // NoSuchElementException
+    movieBookingService.cancelBooking("321", 0)
+    movieBookingService.printSeats()
+
+    println(movieBookingService.isSeatBooked("123", 0)) // false
+    println(movieBookingService.isSeatBooked("777", 1)) // false
+    println(movieBookingService.isSeatBooked("777", 0)) // true
 }
